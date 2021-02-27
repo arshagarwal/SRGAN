@@ -13,6 +13,7 @@ parser.add_argument('--upscale_factor', default=4, type=int, help='super resolut
 parser.add_argument('--test_mode', default='GPU', type=str, choices=['GPU', 'CPU'], help='using GPU or CPU')
 parser.add_argument('--image_name', type=str, help='test low resolution image name')
 parser.add_argument('--model_name', default='netG_epoch_4_100.pth', type=str, help='generator model epoch name')
+parser.add_argument('--img_size', default=512, type=int, help='load img size')
 opt = parser.parse_args()
 
 UPSCALE_FACTOR = opt.upscale_factor
@@ -28,6 +29,7 @@ else:
     model.load_state_dict(torch.load('epochs/' + MODEL_NAME, map_location=lambda storage, loc: storage))
 
 image = Image.open(IMAGE_NAME)
+image = image.resize((opt.img_size, opt.img_size))
 image = Variable(ToTensor()(image), volatile=True).unsqueeze(0)
 if TEST_MODE:
     image = image.cuda()
@@ -37,4 +39,4 @@ out = model(image)
 elapsed = (time.clock() - start)
 print('cost' + str(elapsed) + 's')
 out_img = ToPILImage()(out[0].data.cpu())
-out_img.save('out_srf_' + str(UPSCALE_FACTOR) + '_' + IMAGE_NAME)
+out_img.save(opt.image_name.split('/')[-1])
