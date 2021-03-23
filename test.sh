@@ -1,0 +1,1 @@
+python test.py --test_dir /content/SRGAN/data/celeba_hq/val/male --g_ckpt netG_epoch_4_1.pth

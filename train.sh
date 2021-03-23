@@ -1,0 +1,1 @@
+python train.py --img_dir /content/SRGAN/testimage --val_dir /content/SRGAN/testimage --num_epochs 1
